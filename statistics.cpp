@@ -17,6 +17,11 @@ double Min::Result() const
     return m_result;
 }
 
+const char *Min::Name() const
+{
+    return "Min";
+}
+
 Max::Max() : m_result{std::numeric_limits<double>::lowest()}
 {
 }
@@ -32,6 +37,17 @@ void Max::Set(double value)
 double Max::Result() const
 {
     return m_result;
+}
+
+const char *Max::Name() const
+{
+    return "Max";
+}
+
+StandartDeviation::StandartDeviation() = default;
+
+StandartDeviation::StandartDeviation(const std::vector<double> &arr) : m_buffer{arr}
+{
 }
 
 void StandartDeviation::Set(double value)
@@ -53,8 +69,9 @@ double StandartDeviation::Result() const
     return result;
 }
 
-AverageDeviation::AverageDeviation(StandartDeviation &mean) : m_mean{mean}
+const char *StandartDeviation::Name() const
 {
+    return "SD";
 }
 
 void AverageDeviation::Set(double value)
@@ -65,15 +82,20 @@ void AverageDeviation::Set(double value)
 double AverageDeviation::Result() const
 {
     double result = 0.;
-    double mean = m_mean.Result();
+    StandartDeviation mean{m_buffer};
     StandartDeviation sd;
 
     for (size_t i = 0; i < m_buffer.size(); i++)
     {
-        sd.Set(std::pow(m_buffer[i] - mean, 2));
+        sd.Set(std::pow(m_buffer[i] - mean.Result(), 2));
     }
 
     result = std::sqrt(sd.Result());
 
     return result;
+}
+
+const char *AverageDeviation::Name() const
+{
+    return "AD";
 }

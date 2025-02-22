@@ -3,10 +3,13 @@
 
 int main()
 {
-    Min min{};
-    Max max{};
-    StandartDeviation sd{};
-    AverageDeviation ad{sd};
+    const size_t statisticsSize = 4;
+    IStatistics *statistics[statisticsSize];
+
+    statistics[0] = new Min{};
+    statistics[1] = new Max{};
+    statistics[2] = new StandartDeviation{};
+    statistics[3] = new AverageDeviation{};
 
     double value = 0.;
     while (std::cin >> value)
@@ -17,16 +20,16 @@ int main()
             return -1;
         }
 
-        min.Set(value);
-        max.Set(value);
-        sd.Set(value);
-        ad.Set(value);
+        for (size_t i = 0; i < statisticsSize; i++)
+        {
+            statistics[i]->Set(value);
+        }
     }
 
-    std::cout << "Min = " << min.Result() << std::endl;
-    std::cout << "Max = " << max.Result() << std::endl;
-    std::cout << "SD = " << sd.Result() << std::endl;
-    std::cout << "AD = " << ad.Result() << std::endl;
+    for (size_t i = 0; i < statisticsSize; i++)
+    {
+        std::cout << statistics[i]->Name() << " = " << statistics[i]->Result() << std::endl;
+    }
 
     return 0;
 }

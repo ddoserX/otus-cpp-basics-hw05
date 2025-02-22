@@ -9,6 +9,7 @@ class IStatistics
 public:
     virtual void Set(double) = 0;
     virtual double Result() const = 0;
+    virtual const char *Name() const = 0;
 };
 
 class Min : public IStatistics
@@ -17,6 +18,7 @@ public:
     Min();
     void Set(double) override;
     double Result() const override;
+    const char *Name() const override;
 
 private:
     double m_result;
@@ -28,6 +30,7 @@ public:
     Max();
     void Set(double) override;
     double Result() const override;
+    const char *Name() const override;
 
 private:
     double m_result;
@@ -36,21 +39,23 @@ private:
 class StandartDeviation : public IStatistics
 {
 public:
+    StandartDeviation();
+    StandartDeviation(const std::vector<double> &);
     void Set(double) override;
     double Result() const override;
+    const char *Name() const override;
 
 private:
     std::vector<double> m_buffer;
 };
 
-class AverageDeviation : IStatistics
+class AverageDeviation : public IStatistics
 {
 public:
-    AverageDeviation(StandartDeviation &);
     void Set(double) override;
     double Result() const override;
+    const char *Name() const override;
 
 private:
-    StandartDeviation &m_mean;
     std::vector<double> m_buffer;
 };
